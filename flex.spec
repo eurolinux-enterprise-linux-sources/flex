@@ -1,7 +1,7 @@
 Summary: A tool for creating scanners (text pattern recognizers)
 Name: flex
 Version: 2.5.35
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: BSD
 Group: Development/Tools
 URL: http://flex.sourceforge.net/
@@ -28,6 +28,18 @@ build process.
 
 You should install flex if you are going to use your system for
 application development.
+
+# We keep the libraries in separate sub-package to allow for multilib
+# installations of flex.
+%package devel
+Summary: Libraries for flex scanner generator
+Group: Development/Tools
+
+%description devel
+
+This package contains the library with default implementations of
+`main' and `yywrap' functions that the client binary can choose to use
+instead of implementing their own.
 
 %prep
 %setup -q
@@ -79,11 +91,18 @@ rm -rf ${RPM_BUILD_ROOT}
 %doc COPYING NEWS README
 %{_bindir}/*
 %{_mandir}/man1/*
-%{_libdir}/*.a
 %{_includedir}/FlexLexer.h
 %{_infodir}/flex.info*
 
+%files devel
+%defattr(-,root,root)
+%{_libdir}/*.a
+
 %changelog
+* Sat Feb 21 2014 Patsy Franklin <pfrankli@redhat.com> - 2.5.35-9
+- Create flex-devel sub-package containing libfl.a.
+- Resolves: #570661
+
 * Tue Jan 12 2010 Petr Machata <pmachata@redhat.com> - 2.5.35-8
 - Add source URL
 - Related: #543948
