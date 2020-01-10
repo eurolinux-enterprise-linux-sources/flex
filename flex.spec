@@ -1,7 +1,7 @@
 Summary: A tool for creating scanners (text pattern recognizers)
 Name: flex
 Version: 2.5.37
-Release: 1%{?dist}
+Release: 3%{?dist}
 # parse.c and parse.h are under GPLv3+ with exception which allows
 #	relicensing.  Since flex is shipped under BDS-style license,
 #	let's  assume that the relicensing was done.
@@ -120,6 +120,12 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_datadir}/doc/flex-doc-%{version}
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 2.5.37-3
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 2.5.37-2
+- Mass rebuild 2013-12-27
+
 * Wed Mar 20 2013 Petr Machata <pmachata@redhat.com> - 2.5.37-1
 - Rebase to 2.5.37
 
