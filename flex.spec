@@ -1,7 +1,7 @@
 Summary: A tool for creating scanners (text pattern recognizers)
 Name: flex
 Version: 2.5.37
-Release: 3%{?dist}
+Release: 6%{?dist}
 # parse.c and parse.h are under GPLv3+ with exception which allows
 #	relicensing.  Since flex is shipped under BDS-style license,
 #	let's  assume that the relicensing was done.
@@ -13,10 +13,12 @@ Source: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 
 # https://sourceforge.net/tracker/?func=detail&aid=3546447&group_id=97492&atid=618177
 Patch0: flex-2.5.36-bison-2.6.1.patch
+Patch1: flex-rh1439367.patch
+Patch2: flex-rh1210022.patch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: m4
-BuildRequires: gettext bison m4
+BuildRequires: gettext bison m4 gcc-c++
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 
@@ -60,6 +62,8 @@ plain text and PDF formats.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %global flexdocdir %{_datadir}/doc/flex-doc-%{version}
 
@@ -120,6 +124,15 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_datadir}/doc/flex-doc-%{version}
 
 %changelog
+* Thu Jul 12 2018 Patsy Franklin <pfrankli@redhat.com> - 2.5.37-6
+- Build requires gcc-c++ for building from source. (#1600429)
+
+* Wed May 23 2018 Arjun Shankar <arjun@redhat.com> - 2.5.37-5
+- Remove g++ signed/unsigned comparison warning in generated scanner (#1210022)
+
+* Mon May 21 2018 Arjun Shankar <arjun@redhat.com> - 2.5.37-4
+- Fix testsuite build issues (#1439367)
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 2.5.37-3
 - Mass rebuild 2014-01-24
 
@@ -293,7 +306,7 @@ rm -rf ${RPM_BUILD_ROOT}
 * Wed Mar  8 2006 Petr Machata <pmachata@redhat.com> - 2.5.4a-37.4
 - adding test for #183098 into build process
 
-* Fri Mar  2 2006 Petr Machata <pmachata@redhat.com> - 2.5.4a-37.3
+* Fri Mar  3 2006 Petr Machata <pmachata@redhat.com> - 2.5.4a-37.3
 - rebuilt, no changes inside. In hunt for #183098
 
 * Fri Feb 10 2006 Jesse Keating <jkeating@redhat.com> - 2.5.4a-37.2
@@ -302,7 +315,7 @@ rm -rf ${RPM_BUILD_ROOT}
 * Tue Feb 07 2006 Jesse Keating <jkeating@redhat.com> - 2.5.4a-37.1
 - rebuilt for new gcc4.1 snapshot and glibc changes
 
-* Wed Feb 02 2006 Petr Machata <pmachata@redhat.com> 2.5.4a-37
+* Thu Feb 02 2006 Petr Machata <pmachata@redhat.com> 2.5.4a-37
 - adding `make bigcheck' into build process.  Refreshing initscan.c to
   make this possible.
 
